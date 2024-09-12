@@ -65,7 +65,17 @@ export default function DashbordEn() {
                     type: actionType === 'accept' ? 'success' : 'error',
                     text: actionType === 'accept' ? 'Accepted successfully' : 'Declined successfully',
                 });
+    
+                // Keep the student list open and only reset selected students
                 setSelectedStudents([]);
+    
+                // Optionally, you can refresh the data to reflect changes without closing the list
+                router.get(route('dashEdu.index'), { course_id: courseCode }, {
+                    preserveState: true,
+                    onSuccess: () => {
+                        // Handle the response if necessary
+                    }
+                });
             },
             onError: () => {
                 setMessage({
@@ -75,6 +85,7 @@ export default function DashbordEn() {
             }
         });
     };
+    
 
     const getRatingPercentage = (rating) => Math.round(rating);
 
@@ -140,13 +151,7 @@ export default function DashbordEn() {
                                     className={`ml-2 w-5 h-5 transform ${showStudents ? 'rotate-180' : 'rotate-0'} transition-transform duration-300`}
                                 />
                             </Typography>
-                            {message && (
-                                <div className={`mt-2 p-2 rounded-lg text-white ${
-                                    message.type === 'success' ? 'bg-green-500' : 'bg-red-500'
-                                }`}>
-                                    {message.text}
-                                </div>
-                            )}
+                           
                             {showStudents && rattrapages[courseCode]?.length > 0 ? (
                                 <div className="space-y-2 mt-2 border rounded-lg p-2 bg-gray-100">
                                     {rattrapages[courseCode].map((student) => (
